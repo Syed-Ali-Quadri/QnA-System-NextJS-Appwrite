@@ -1,4 +1,4 @@
-import { Client, Account, Databases, Storage } from "appwrite";
+import { Client, Account, Databases, Storage, Avatars } from "appwrite";
 import env from "@/app/env";
 
 const client = new Client()
@@ -8,5 +8,6 @@ const client = new Client()
 const account = new Account(client);
 const databases = new Databases(client);
 const storage = new Storage(client);
+const avatar = new Avatars(client);
 
-export { account, databases, storage };
+export { account, databases, storage, avatar };
