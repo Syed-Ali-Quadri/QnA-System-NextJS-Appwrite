@@ -8,6 +8,6 @@ const client = new Client()
 const account = new Account(client);
 const databases = new Databases(client);
 const storage = new Storage(client);
-const avatar = new Avatars(client);
+const avatars = new Avatars(client);
 
-export { account, databases, storage, avatar };
+export { account, databases, storage, avatars };
