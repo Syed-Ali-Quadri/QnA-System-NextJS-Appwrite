@@ -5,7 +5,7 @@ import { Permission } from "appwrite";
 import { db, commentCollection } from "../name";
 import { databases } from "./config";
 
-export default async function createcommentCollection() {
+export default async function createCommentCollection() {
     // Create question collection.
     await databases.createCollection(db, commentCollection, commentCollection, [
         Permission.read("any"),
