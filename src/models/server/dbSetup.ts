@@ -10,7 +10,7 @@ import createvoteCollection from "./vote.collection";
 
 export async function getOrCreateDB() {
     try {
-        // Connnecting the database.
+        // Connecting the database.
         await databases.get(db);
         console.log("Database is connected.");
 
@@ -22,7 +22,7 @@ export async function getOrCreateDB() {
             console.log("Database is created.")
 
             // Creating/saving the collections in the database.
-            Promise.all([
+            await Promise.all([
                 createQuestionCollection(),
                 createAnswerCollection(),
                 createCommentCollection(),
@@ -31,7 +31,7 @@ export async function getOrCreateDB() {
 
         } catch (error) {
             // Error handling in the database.
-            console.log("There was a error in database connection.", error);
+            console.log("There was an error in database connection.", error);
         }
     }
 }
