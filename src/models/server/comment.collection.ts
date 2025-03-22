@@ -9,10 +9,10 @@ export default async function createCommentCollection() {
     // Create question collection.
     await databases.createCollection(db, commentCollection, commentCollection, [
         Permission.read("any"),
-        Permission.read("user"),
-        Permission.create("user"),
-        Permission.update("user"),
-        Permission.delete("user"),
+        Permission.read("users"),
+        Permission.create("users"),
+        Permission.update("users"),
+        Permission.delete("users"),
     ]);    
     
     console.log("Answer collection is created.");
