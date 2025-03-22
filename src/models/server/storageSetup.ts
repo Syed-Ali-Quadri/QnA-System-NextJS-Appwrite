@@ -1,6 +1,7 @@
 // Importing the internal config files.
 import { Permission } from "node-appwrite";
 
+// Importing the stuffs from local files.
 import { storage } from "./config";
 import { questionAttachmentBucket } from "../name";
 
