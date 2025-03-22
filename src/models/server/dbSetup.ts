@@ -6,9 +6,9 @@ import { db } from "../name";
 import createQuestionCollection from "./question.collection";
 import createAnswerCollection from "./answer.collection";
 import createCommentCollection from "./comment.collection";
-import createvoteCollection from "./vote.collection";
+import createVoteCollection from "./vote.collection";
 
-export async function getOrCreateDB() {
+export default async function getOrCreateDB() {
     try {
         // Connecting the database.
         await databases.get(db);
@@ -26,8 +26,8 @@ export async function getOrCreateDB() {
                 createQuestionCollection(),
                 createAnswerCollection(),
                 createCommentCollection(),
-                createvoteCollection()
-            ])
+                createVoteCollection()
+            ]);
 
         } catch (error) {
             // Error handling in the database.
