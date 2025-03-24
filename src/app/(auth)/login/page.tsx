@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import React from "react";
@@ -6,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
 import Link from "next/link";
+import { useAuthStore } from "@/store/auth";
 
 const BottomGradient = () => {
     return (
@@ -27,7 +29,26 @@ const LabelInputContainer = ({
 };
 
 export default function Login() {
-    
+    const { login } = useAuthStore() // as { login: () => Promise<any> };
+    const [isLoading, setIsLoading] = React.useState(false);
+    const [error, setError] = React.useState("");
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        const formData = new FormData(e.currentTarget);
+        const email = formData.get("email");
+        const password = formData.get("password");
+
+        if(!email || !password) setError(() => "Please fill the required fields.");
+
+        setIsLoading(() => true);
+        const loginResponse = await login(email, password);
+
+        if(loginResponse.error) setError(() => loginResponse.error.message);
+
+        setIsLoading(() => false);
+    }
 
     return (
         <div className="mx-auto w-full max-w-md rounded-none border border-solid border-white/30 bg-white p-4 shadow-input dark:bg-black md:rounded-2xl md:p-8">
@@ -43,10 +64,10 @@ export default function Login() {
                 with riverflow
             </p>
 
-            {/* {error && (
+            {error && (
                 <p className="mt-8 text-center text-sm text-red-500 dark:text-red-400">{error}</p>
-            )} */}
-            <form className="my-8">
+            )}
+            <form className="my-8" onSubmit={handleSubmit}>
                 <LabelInputContainer className="mb-4">
                     <Label htmlFor="email">Email Address</Label>
                     <Input
@@ -65,7 +86,7 @@ export default function Login() {
                 <button
                     className="group/btn relative block h-10 w-full rounded-md bg-gradient-to-br from-black to-neutral-600 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:bg-zinc-800 dark:from-zinc-900 dark:to-zinc-900 dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
                     type="submit"
-                    // disabled={isLoading}
+                    disabled={isLoading}
                 >
                     Log in &rarr;
                     <BottomGradient />
@@ -77,7 +98,7 @@ export default function Login() {
                     <button
                         className="group/btn relative flex h-10 w-full items-center justify-start space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black shadow-input dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
                         type="button"
-                        // disabled={isLoading}
+                        disabled={isLoading}
                     >
                         <IconBrandGoogle className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
                         <span className="text-sm text-neutral-700 dark:text-neutral-300">
@@ -88,7 +109,7 @@ export default function Login() {
                     <button
                         className="group/btn relative flex h-10 w-full items-center justify-start space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black shadow-input dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
                         type="button"
-                        // disabled={isLoading}
+                        disabled={isLoading}
                     >
                         <IconBrandGithub className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
                         <span className="text-sm text-neutral-700 dark:text-neutral-300">
