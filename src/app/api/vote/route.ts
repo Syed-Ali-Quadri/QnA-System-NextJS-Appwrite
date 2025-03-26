@@ -1,4 +1,9 @@
-import { answerCollection, db, questionCollection, voteCollection } from "@/models/name";
+import {
+	answerCollection,
+	db,
+	questionCollection,
+	voteCollection
+} from "@/models/name";
 import { databases, users } from "@/models/server/config";
 import { NextRequest, NextResponse } from "next/server";
 import { Query } from "node-appwrite";
@@ -23,9 +28,29 @@ export async function POST(request: NextRequest) {
 			);
 		}
 
-        const answerOrQuestion = await databases.getDocument(db, type === "question" ? questionCollection : answerCollection, typeId);
+		const answerOrQuestion = await databases.getDocument(
+			db,
+			type === "question" ? questionCollection : answerCollection,
+			typeId
+		);
 
-        // const authorPrefs = await users.getPrefs(answerOrQuestion.authodId);
+		const authorPrefs = await users.getPrefs(answerOrQuestion.authodId);
+
+		if (response.documents[0]) {
+			await users.updatePrefs(answerOrQuestion.authorId, {
+				reputation:
+					response.documents[0].voteStatus === "upvote"
+						? Number(authorPrefs.reputation) - 1
+						: Number(authorPrefs.reputation) + 1
+			});
+		} else {
+			await users.updatePrefs(answerOrQuestion.authorId, {
+				reputation:
+					response.documents[0].voteStatus === "upvote"
+						? Number(authorPrefs.reputation) + 1
+						: Number(authorPrefs.reputation) - 1
+			});
+		}
 	} catch (error) {
 		return NextResponse.json(
 			{
