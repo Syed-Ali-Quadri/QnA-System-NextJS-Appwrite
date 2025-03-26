@@ -35,20 +35,25 @@ export default function Login() {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
+    
         const formData = new FormData(e.currentTarget);
-        const email = formData.get("email");
-        const password = formData.get("password");
-
-        if(!email || !password) setError(() => "Please fill the required fields.");
-
-        setIsLoading(() => true);
+        const email = formData.get("email") as string;
+        const password = formData.get("password") as string;
+    
+        if (!email || !password) {
+            setError("Please fill the required fields.");
+            return;
+        }
+    
+        setIsLoading(true);
         const loginResponse = await login(email, password);
-
-        if(loginResponse.error) setError(() => loginResponse.error.message);
-
-        setIsLoading(() => false);
-    }
+    
+        if (loginResponse?.error) {
+            setError(loginResponse.error.message);
+        }
+    
+        setIsLoading(false);
+    };
 
     return (
         <div className="mx-auto w-full max-w-md rounded-none border border-solid border-white/30 bg-white p-4 shadow-input dark:bg-black md:rounded-2xl md:p-8">

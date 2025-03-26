@@ -23,36 +23,36 @@ export default function Register() {
     e.preventDefault();
     setIsLoading(true);
     setError("");
-
+  
     const formData = new FormData(e.currentTarget);
-    const firstname = formData.get("firstname")?.toString().trim();
-    const lastname = formData.get("lastname")?.toString().trim();
-    const email = formData.get("email")?.toString().trim();
-    const password = formData.get("password")?.toString().trim();
-
+    const firstname = formData.get("firstname")?.toString();
+    const lastname = formData.get("lastname")?.toString();
+    const email = formData.get("email")?.toString();
+    const password = formData.get("password")?.toString();
+  
     if (!firstname || !lastname || !email || !password) {
       setError("Please fill out all fields");
       setIsLoading(false);
       return;
     }
-
+  
     try {
       const response = await createAccount(`${firstname} ${lastname}`, email, password);
       if (response.error) {
-        setError(response.error.message || "Failed to create account");
-        return;
+        throw new Error(response.error.message || "Failed to create account");
       }
-
+  
       const loginResponse = await login(email, password);
       if (loginResponse.error) {
-        setError(loginResponse.error.message || "Login failed");
+        setError("Account created, but login failed. Try logging in manually.");
+        return;
       }
     } catch (err) {
-      setError("An unexpected error occurred");
+      setError(err instanceof Error ? err.message : "An unexpected error occurred");
     } finally {
       setIsLoading(false);
     }
-  };
+  };  
 
   return (
     <div className="mx-auto w-full max-w-md rounded-none border border-white/30 bg-white p-4 shadow-input dark:bg-black md:rounded-2xl md:p-8">
