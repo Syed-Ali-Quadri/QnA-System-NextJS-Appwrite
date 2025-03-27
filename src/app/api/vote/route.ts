@@ -82,7 +82,7 @@ export async function POST(request: NextRequest) {
 			} else {
 				await users.updatePrefs(answerOrQuestion.authorId, {
 					reputation:
-						response.documents[0].voteStatus === "upvote"
+						response.documents[0]?.voteStatus === "upvote"
 							? Number(authorPrefs.reputation) + 1
 							: Number(authorPrefs.reputation) - 1
 				});
@@ -94,13 +94,13 @@ export async function POST(request: NextRequest) {
 					Query.equal("type", type),
 					Query.equal("typeId", typeId),
 					Query.equal("voteStatus", "upvoted"),
-					Query.limit(1)
+					// Query.limit(1)
 				]),
 				databases.listDocuments(db, voteCollection, [
 					Query.equal("type", type),
 					Query.equal("typeId", typeId),
 					Query.equal("voteStatus", "downvoted"),
-					Query.limit(1)
+					// Query.limit(1)
 				])
 			]);
 
@@ -127,13 +127,13 @@ export async function POST(request: NextRequest) {
 				Query.equal("type", type),
 				Query.equal("typeId", typeId),
 				Query.equal("voteStatus", "upvoted"),
-				Query.limit(1)
+				// Query.limit(1)
 			]),
 			databases.listDocuments(db, voteCollection, [
 				Query.equal("type", type),
 				Query.equal("typeId", typeId),
 				Query.equal("voteStatus", "downvoted"),
-				Query.limit(1)
+				// Query.limit(1)
 			])
 		]);
 
@@ -149,7 +149,7 @@ export async function POST(request: NextRequest) {
 				status: 200
 			}
 		);
-	} catch (error) {
+	} catch (error: any) {
 		// Handling Errors
 		return NextResponse.json(
 			{
